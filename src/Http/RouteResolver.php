@@ -254,10 +254,17 @@ class RouteResolver
      */
     protected function getCsrfToken()
     {
-        if (is_null($this->csrfToken)) {
-            $this->csrfToken = $this->app->make('session')->getToken();
+        // revove getToken from Laravel 5.4
+        if($this->app->version() =="5.4.13") {
+            if (is_null($this->csrfToken)) {
+                $this->csrfToken = $this->app->make('session')->token();
+            }
+        }else{
+            if (is_null($this->csrfToken)) {
+                $this->csrfToken = $this->app->make('session')->getToken();
+            }
         }
 
-        return $this->csrfToken;
+       return $this->csrfToken;
     }
 }
